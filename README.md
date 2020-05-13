@@ -3,11 +3,11 @@ Package thrower implements a simple throw/catch exception wrapper around
 panic. It catches its own panics, but lets the others through.
 ## Functions
 ### func DisableCatching()
-DisableCatching will prevent thrown errors from being caught, and so they
+*DisableCatching* will prevent thrown errors from being caught, and so they
 will become regular panics. Do not use this in production code; it is for
-debugging only.
+debugging only. It is against Go style to let panics cross API boundaries. All thrown errors should be caught by *RecoverError* normally.
 ### func RecoverError(err \*error)
-RecoverError catches a thrown error. The pointer passed in can be nil if you
+*RecoverError* catches a thrown error. The pointer passed in can be `nil` if you
 don't care what the thrown error was.
 
 Use it as follows:
@@ -21,10 +21,9 @@ Use it as follows:
            thrower.ThrowIfError(r)  // 'r' becomes the function's return value
         }
 ### func ReEnableCatching()
-ReEnableCatching re-enables catching of panics.
+*ReEnableCatching* re-enables catching of panics if they were disabled by *DisableCatching*.
 ### func Throw(err error)
-Throw throws the given error, which can be caught by RecoverError
-potentially.
+*Throw* throws the given error, which should be caught by *RecoverError* normally.
 ### func ThrowIfError(err error)
-ThrowIfError throws an error only if err is not nil.
+*ThrowIfError* throws an error only if `err` is not `nil`.
 
