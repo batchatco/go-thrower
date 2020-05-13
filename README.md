@@ -1,5 +1,5 @@
 # go-thrower
-Package thrower implements a simple throw/catch exception wrapper around
+Package go-thrower implements a simple throw/catch exception wrapper around
 panic. It catches its own panics, but lets the others through.
 ## Functions
 ### func DisableCatching()
