@@ -18,7 +18,7 @@ Use it as follows:
            // Do some things that might call thrower.Throw() eventually.
            // For example:
            r := somethingThatCanReturnError()
-           thrower.ThrowIfError(r)  // 'r' becomes the function's return value
+           thrower.ThrowIfError(r)  // If not nil, 'r' becomes the function's return value
         }
 ### func ReEnableCatching()
 *ReEnableCatching* re-enables catching of panics if they were disabled by *DisableCatching*.
