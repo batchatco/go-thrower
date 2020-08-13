@@ -20,6 +20,25 @@ Use it as follows:
            r := somethingThatCanReturnError()
            thrower.ThrowIfError(r)  // If not nil, 'r' becomes the function's return value
         }
+        
+For functions that don't return an error, you can wrap the code in another function to retrieve the error and do
+something useful with it:
+
+        func returnsNoError() {
+           // This will catch thrown errors and set the return value to the thrown error.
+           getErr := func() (err error) {
+              defer thrower.RecoverError(&err)
+              // Do some things that might call thrower.Throw() eventually.
+              // For example:
+              r := somethingThatCanReturnError()
+              thrower.ThrowIfError(r)  // If not nil, 'r' becomes the function's return value
+           }
+           err := getErr()
+           if err != nil {
+                fmt.Println("We got an error", err)
+           }
+        }
+        
 ### func ReEnableCatching()
 *ReEnableCatching* re-enables catching of panics if they were disabled by *DisableCatching*.
 ### func Throw(err error)
