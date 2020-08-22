@@ -12,7 +12,7 @@ don't care what the thrown error was.
 
 Use it as follows:
 
-        func doSomething() (err error) {  
+        func doSomething() (err error) {
           // This will catch thrown errors and set the return value to the thrown error.
           defer thrower.RecoverError(&err)
           // Do some things that might call thrower.Throw() eventually.
@@ -20,7 +20,7 @@ Use it as follows:
           r := somethingThatCanReturnError()
           thrower.ThrowIfError(r)  // If not nil, 'r' becomes the function's return value
         }
-        
+
 For functions that don't return an error, you can wrap the code in another function to retrieve the error and do
 something useful with it:
 
@@ -32,17 +32,17 @@ something useful with it:
             // For example:
             r := somethingThatCanReturnError()
             thrower.ThrowIfError(r)  // If not nil, 'r' becomes the function's return value
+            return nil
           }
           err := getErr()
           if err != nil {
             fmt.Println("We got an error", err)
           }
         }
-        
+
 ### func ReEnableCatching()
 *ReEnableCatching* re-enables catching of panics if they were disabled by *DisableCatching*.
 ### func Throw(err error)
 *Throw* throws the given error, which should be caught by *RecoverError* normally.
 ### func ThrowIfError(err error)
 *ThrowIfError* throws an error only if `err` is not `nil`.
-
