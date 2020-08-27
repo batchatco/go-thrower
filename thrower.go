@@ -1,7 +1,6 @@
 /*
 Package thrower implements a simple throw/catch exception wrapper around panic.
-It catches its own panics, but lets the others through.
-
+It only catches the panics that are thrown. Other panics are passed through.
 */
 package thrower
 
@@ -14,6 +13,14 @@ type thrown struct {
 	error
 }
 
+// CatchState is passed to SetCatching
+type CatchState bool
+
+const (
+	Catch CatchState = iota == 1
+	DontCatch
+)
+
 func newThrown(err error) thrown {
 	return thrown{err}
 }
@@ -24,17 +31,6 @@ func (th thrown) toError() error {
 
 func (th thrown) Error() string {
 	return th.error.Error()
-}
-
-// DisableCatching will prevent thrown errors from being caught, and so they will
-// become regular panics. Do not use this in production code; it is for debugging only.
-func DisableCatching() {
-	disabled = true
-}
-
-// ReEnableCatching re-enables catching of panics.
-func ReEnableCatching() {
-	disabled = false
 }
 
 // Throw throws the given error, which can be caught by RecoverError potentially.
@@ -82,4 +78,14 @@ func RecoverError(err *error) {
 		// This is someone else's panic.
 		panic(r)
 	}
+}
+
+// SetCatching is for debugging only. It sets thrown error catching on or off and
+// returns the  previous state. The default is Catch and does not need to be set explicitly
+// Disabled thrown errors become just regular panics and are not caught.
+// Do not use this in production code. It is for debugging only.
+func SetCatching(state CatchState) CatchState {
+	old := disabled
+	disabled = bool(state)
+	return CatchState(old)
 }

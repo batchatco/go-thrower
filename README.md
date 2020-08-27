@@ -2,10 +2,6 @@
 Package go-thrower implements a simple throw/catch exception wrapper around
 panic. It catches its own panics, but lets the others through.
 ## Functions
-### func DisableCatching()
-*DisableCatching* will prevent thrown errors from being caught, and so they
-will become regular panics. Do not use this in production code; it is for
-debugging only. It is against Go style to let panics cross API boundaries. All thrown errors should be caught by *RecoverError* normally.
 ### func RecoverError(err \*error)
 *RecoverError* catches a thrown error. The pointer passed in can be `nil` if you
 don't care what the thrown error was.
@@ -40,8 +36,13 @@ something useful with it:
           }
         }
 
-### func ReEnableCatching()
-*ReEnableCatching* re-enables catching of panics if they were disabled by *DisableCatching*.
+### func SetCatching(state CatchState) CatchState
+*SetCatching* sets whether or not thrown errors get caught and returns the
+previous value.  Passing in *DontCatch* will prevent thrown errors from being
+caught.  They will become just regular panics.  Do not use this in production
+code; it is for debugging only. It is against Go style to let panics cross API
+boundaries. All thrown errors should be caught by *RecoverError* normally.
+
 ### func Throw(err error)
 *Throw* throws the given error, which should be caught by *RecoverError* normally.
 ### func ThrowIfError(err error)
