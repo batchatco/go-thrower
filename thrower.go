@@ -81,7 +81,7 @@ func RecoverError(err *error) {
 }
 
 // SetCatching is for debugging only. It sets thrown error catching on or off and
-// returns the  previous state. The default is Catch and does not need to be set explicitly
+// returns the  previous state. The default is Catch and does not need to be set explicitly.
 // Disabled thrown errors become just regular panics and are not caught.
 // Do not use this in production code. It is for debugging only.
 func SetCatching(state CatchState) CatchState {
